@@ -12,33 +12,34 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   const filter = req.query.filter;
   const filteredTodos = filter ? todos.filter((t) => t.priority === filter) : todos;
-  res.render('index', { todos: filteredTodos });
+  res.render('index', { todos: filteredTodos, filter });
 });
 
 // POST Add Todo
 app.post('/add', (req, res) => {
-  const { task, priority } = req.body;
+  const { task, priority, filter } = req.body;
   if (task && task.trim()) {
     todos.push({ task: task.trim(), priority });
   }
-  res.redirect('/');
+  res.redirect(filter ? `/?filter=${filter}` : '/');
 });
 
 // POST Edit Todo
 app.post('/edit/:id', (req, res) => {
   const id = req.params.id;
-  const { task, priority } = req.body;
+  const { task, priority, filter } = req.body;
   if (todos[id]) {
     todos[id] = { task: task.trim(), priority };
   }
-  res.redirect('/');
+  res.redirect(filter ? `/?filter=${filter}` : '/');
 });
 
 // POST Delete Todo
 app.post('/delete/:id', (req, res) => {
   const id = req.params.id;
+  const { filter } = req.body;
   todos.splice(id, 1);
-  res.redirect('/');
+  res.redirect(filter ? `/?filter=${filter}` : '/');
 });
 
 app.listen(PORT, () => {

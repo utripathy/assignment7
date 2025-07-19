@@ -2,6 +2,8 @@
 
     <div class="container">
         <h2>Todo List</h2>
+
+        <!-- Add Form -->
         <form action="/add" method="POST" onsubmit="return validateForm()">
             <input type="text" name="task" id="taskInput" placeholder="Enter your task" />
             <select name="priority">
@@ -9,24 +11,28 @@
                 <option value="Medium">Medium</option>
                 <option value="High">High</option>
             </select>
+            <input type="hidden" name="filter" value="<%= filter %>">
             <button type="submit">Add</button>
         </form>
 
+        <!-- Filter -->
         <div>
             <form method="GET" action="/">
                 <label for="filter">Filter by Priority:</label>
                 <select name="filter" onchange="this.form.submit()">
-                    <option value="">All</option>
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
+                    <option value="" <%=!filter ? 'selected' : '' %>>All</option>
+                    <option value="Low" <%=filter==='Low' ? 'selected' : '' %>>Low</option>
+                    <option value="Medium" <%=filter==='Medium' ? 'selected' : '' %>>Medium</option>
+                    <option value="High" <%=filter==='High' ? 'selected' : '' %>>High</option>
                 </select>
             </form>
         </div>
 
+        <!-- Todo List -->
         <ul>
             <% todos.forEach((todo, index)=> { %>
                 <li>
+                    <!-- Edit Form -->
                     <form action="/edit/<%= index %>" method="POST" style="display: inline;">
                         <input type="text" name="task" value="<%= todo.task %>" required />
                         <select name="priority">
@@ -34,9 +40,13 @@
                             <option value="Medium" <%=todo.priority==='Medium' ? 'selected' : '' %>>Medium</option>
                             <option value="High" <%=todo.priority==='High' ? 'selected' : '' %>>High</option>
                         </select>
+                        <input type="hidden" name="filter" value="<%= filter %>">
                         <button type="submit">Update</button>
                     </form>
+
+                    <!-- Delete Form -->
                     <form action="/delete/<%= index %>" method="POST" style="display: inline;">
+                        <input type="hidden" name="filter" value="<%= filter %>">
                         <button type="submit">Delete</button>
                     </form>
                 </li>
