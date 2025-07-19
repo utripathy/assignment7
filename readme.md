@@ -1,7 +1,12 @@
 ## Tech Stack
 
 - Node.js
-- express.js
+
+- Express.js
+
+- EJS templating
+
+- HTML & CSS
 
 ## Clone the repository
 
